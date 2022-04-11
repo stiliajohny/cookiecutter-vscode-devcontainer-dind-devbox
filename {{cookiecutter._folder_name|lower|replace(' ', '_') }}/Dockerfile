@@ -41,7 +41,7 @@ CMD [ "sleep", "infinity" ]
 
 # [Optional] Uncomment this section to install additional OS packages.
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
-    && apt-get -y install --no-install-recommends "${INSTALLED_PACKAGES}"
+    && apt-get -y install --no-install-recommends $INSTALLED_PACKAGES
 
 # Install minikube
 RUN curl -LO  -o minikube-linux-amd64 https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64 && \
