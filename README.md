@@ -1,28 +1,17 @@
-[![Contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url]
-[![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
-[![GPL3 License][license-shield]][license-url]
-[![LinkedIn][linkedin-shield]][linkedin-url]
-[![Ask Me Anything][ask-me-anything]][personal-page]
-
 <!-- PROJECT LOGO -->
 <br />
 <p align="center">
   <a href="https://github.com/stiliajohny/cookiecutter-vscode-devcontainer-dind-devbox">
-    <img src="https://raw.githubusercontent.com/stiliajohny/cookiecutter-vscode-devcontainer-dind-devbox/main/.assets/logo.png" alt="Main Logo" width="80" height="80">
+    <img src="https://github.com/stiliajohny/cookiecutter-vscode-devcontainer-dind-devbox/raw/main/.assets/docker.png" alt="Logo" width="80" height="80">
   </a>
 
-  <h3 align="center">cookiecutter-vscode-devcontainer-dind-devbox</h3>
+  <h3 align="center">VSCode Devcontainer Cookiecutter Template</h3>
 
   <p align="center">
-    Cookiecut a devcontainer that runs DinD with all of my tools installed. Call it a "dev-box".
+    This is a template to be used with cookiecuter to create a complete vscode devcontainer folder with the required files
     <br />
-    <a href="./README.md"><strong>Explore the docs »</strong></a>
+    <a href="https://github.com/stiliajohny/cookiecutter-vscode-devcontainer-dind-devbox/raw/master/README.md"><strong>Explore the docs »</strong></a>
     <br />
-    <br />
-    <a href="https://github.com/stiliajohny/cookiecutter-vscode-devcontainer-dind-devbox">View Demo</a>
-    ·
     <a href="https://github.com/stiliajohny/cookiecutter-vscode-devcontainer-dind-devbox/issues/new?labels=i%3A+bug&template=1-bug-report.md">Report Bug</a>
     ·
     <a href="https://github.com/stiliajohny/cookiecutter-vscode-devcontainer-dind-devbox/issues/new?labels=i%3A+enhancement&template=2-feature-request.md">Request Feature</a>
@@ -40,6 +29,8 @@
   - [Prerequisites](#prerequisites)
   - [Installation](#installation)
 - [Usage](#usage)
+- [What this template provides?](#what-this-template-provides)
+  - [Installed Software](#installed-software)
 - [Roadmap](#roadmap)
 - [Contributing](#contributing)
 - [License](#license)
@@ -50,92 +41,57 @@
 
 ## About The Project
 
-[![cookiecutter-vscode-devcontainer-dind-devbox Screen Shot][product-screenshot]](./.assets/screenshot.png)
-
-<!--
-There are many great README templates available on GitHub, however, I didn't find one that really suit my needs so I created this enhanced one. I want to create a README template so amazing that it'll be the last one you ever need.
-
-Here's why:
-
-- Your time should be focused on creating something amazing. A project that solves a problem and helps others
-- You shouldn't be doing the same tasks over and over like creating a README from scratch
-- You should element DRY principles to the rest of your life :smile:
-
-Of course, no one template will serve all projects since your needs may be different. So I'll be adding more in the near future. You may also suggest changes by forking this repo and creating a pull request or opening an issue.
-
-A list of commonly used resources that I find helpful are listed in the acknowledgements.
--->
+This is my very personal `devcontainer` template for vscode.
+I have created this template to help me get started with vscode devcontainer. in particular, I am udinf DinD and tools like Minikube and Kind
+For a full list of tools look at [What this template provides?](#what-this-template-provides)
 
 ### Built With
 
-<!--
-This section should list any major frameworks that you built your project using. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
-
-- [Bootstrap](https://getbootstrap.com)
-- [JQuery](https://jquery.com)
-- [Laravel](https://laravel.com)
--->
+- Cookiecutter
+- Python
+- YAML
+- Docker
+- VSCode
 
 ---
-
-<!-- GETTING STARTED -->
 
 ## Getting Started
 
-<!--
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
--->
-
 ### Prerequisites
 
-<!--
-
-This is an example of how to list things you need to use the software and how to install them.
-
-- npm
-
-```sh
-npm install npm@latest -g
-```
--->
+- cookiecutter
+- Docker
+- VSCode
 
 ### Installation
 
-<!--
-1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the repo
-
-```sh
-git clone https://github.com/your_username_/Project-Name.git
-```
-
-3. Install NPM packages
-
-```sh
-npm install
-```
-
-4. Enter your API in `config.js`
-
-```JS
-const API_KEY = 'ENTER YOUR API';
-```
--->
-
----
-
-<!-- USAGE EXAMPLES -->
+- cookiecutter ==> `$ pip3 install cookiecutter`
+- Docker ==> `$ sudo apt-get install docker.io`
+- VSCode ==> `$ sudo apt-get install vscode`
 
 ## Usage
 
-<!--
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
-
-_For more examples, please refer to the [Documentation](https://example.com)_
--->
+- `$ cookiecutter gh:stiliajohny/cookiecutter-vscode-devcontainer-dind-devbox`
+- Open the VS Code folder and Reopen in Container
 
 ---
+
+## What this template provides?
+
+Initialize a new folder with:
+
+- `devcontainer.json` with all the settings
+- `Dockerfile` with prerequisites
+- Dockerfile library-scripts folders
+- Dockerfile scripts folder
+
+### Installed Software
+
+- Kind
+- Minikube
+- Docker (dockerd)
+- kubectl
+- helm
 
 <!-- ROADMAP -->
 
@@ -144,8 +100,6 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 See the [open issues](https://github.com/stiliajohny/cookiecutter-vscode-devcontainer-dind-devbox/issues) for a list of proposed features (and known issues).
 
 ---
-
-<!-- CONTRIBUTING -->
 
 ## Contributing
 
@@ -163,17 +117,13 @@ Contributions are what make the open source community such an amazing place to b
 
 ## License
 
-Distributed under the GPLv3 License. See `LICENSE` for more information.
+Distributed under the GPL-3.0 License. See `LICENSE` for more information.
 
 <!-- CONTACT -->
 
 ## Contact
 
 John Stilia - stilia.johny@gmail.com
-
-<!--
-Project Link: [https://github.com/your_username/repo_name](https://github.com/your_username/repo_name)
--->
 
 ---
 
