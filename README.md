@@ -2,7 +2,7 @@
 <br />
 <p align="center">
   <a href="https://github.com/stiliajohny/cookiecutter-vscode-devcontainer-dind-devbox">
-    <img src="https://github.com/stiliajohny/cookiecutter-vscode-devcontainer-dind-devbox/raw/main/.assets/docker.png" alt="Logo" width="80" height="80">
+    <img src="https://github.com/stiliajohny/cookiecutter-vscode-devcontainer-dind-devbox/raw/master/.assets/docker.png" alt="Logo" width="80" height="80">
   </a>
 
   <h3 align="center">VSCode Devcontainer Cookiecutter Template</h3>
@@ -42,7 +42,7 @@
 ## About The Project
 
 This is my very personal `devcontainer` template for vscode.
-I have created this template to help me get started with vscode devcontainer. in particular, I am udinf DinD and tools like Minikube and Kind
+I have created this template to help me get started with vscode devcontainer. In particular, I am udinf DinD and tools like Minikube and Kind
 For a full list of tools look at [What this template provides?](#what-this-template-provides)
 
 ### Built With
