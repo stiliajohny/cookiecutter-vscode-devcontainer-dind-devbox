@@ -17,3 +17,15 @@ jobs:
           target: {{cookiecutter._folder_name|lower|replace(' ', '_') }}/Dockerfile
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  lint-markdown:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+
+      - name: Lint markdown files
+        uses: avto-dev/markdown-lint@v1.5.0
+        with:
+          args: "**/*.md"
+          ignore: "CHANGELOG.md"
