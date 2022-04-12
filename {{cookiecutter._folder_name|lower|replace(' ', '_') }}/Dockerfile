@@ -23,6 +23,7 @@ ARG USER_GID=$USER_UID
 ARG INSTALLED_PACKAGES="apt-utils git zsh jq python3-pip"
 
 COPY library-scripts/*.sh /tmp/library-scripts/
+COPY scripts/*.sh /tmp/scripts/
 
 RUN apt-get update \
     && /bin/bash /tmp/library-scripts/common-debian.sh "${INSTALL_ZSH}" "${USERNAME}" "${USER_UID}" "${USER_GID}" "${UPGRADE_PACKAGES}" "true" "true" \
@@ -30,6 +31,8 @@ RUN apt-get update \
     && /bin/bash /tmp/library-scripts/docker-in-docker-debian.sh "${ENABLE_NONROOT_DOCKER}" "${USERNAME}" "${USE_MOBY}" "${DOCKER_VERSION}" \
     # Clean up
     && apt-get autoremove -y && apt-get clean -y && rm -rf /var/lib/apt/lists/* /tmp/library-scripts/
+RUN /bin/bash /tmp/scripts/*.sh && \
+    apt-get autoremove -y && apt-get clean -y && rm -rf /tmp/scripts
 
 VOLUME [ "/var/lib/docker" ]
 
