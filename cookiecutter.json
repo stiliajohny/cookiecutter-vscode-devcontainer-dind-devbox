@@ -8,7 +8,6 @@
         "buster"
     ],
     "docker_extra_packages": "vim git zsh jq python3-pip",
-    "postStartCommand": "nohup bash -c 'echo Hello &' > postStartCommand.log 2>&1",
     "postCreateCommand": "nohup bash -c 'echo Hello &' > postCreateCommand.log 2>&1",
     "remoteUser": "vscode"
 }
