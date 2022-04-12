@@ -13,8 +13,8 @@
 	"mounts": [
 		// required for docker-in-docker to run
 		"source=dind-var-lib-docker,target=/var/lib/docker,type=volume",
-		// Pass though the kube config folder (readonly)
-		"source=${localEnv:HOME}${localEnv:USERPROFILE}/.kube,target=/home/vscode/.kube,type=bind,readonly=true",
+		// Pass though the kube config folder (read-write as minikube needs to write to it)
+		"source=${localEnv:HOME}${localEnv:USERPROFILE}/.kube,target=/home/vscode/.kube,type=bind,readonly=false",
 		// Pass though the ssh keypair folder (readonly)
 		"source=${localEnv:HOME}${localEnv:USERPROFILE}/.ssh/,target=/home/vscode/.ssh/,type=bind,consistency=cached,readonly=true",
 		// Pass though the gitconfig file (readonly)
@@ -96,12 +96,12 @@
 		"tht13.python",
 		"vscode-icons-team.vscode-icons",
 		"waderyan.gitblame",
-		"WakaTime.vscode-wakatime",
 		"wholroyd.HCL",
 		"wingrunr21.vscode-ruby",
 		"xaver.clang-format",
 		"yzhang.markdown-all-in-one",
-		"ziyasal.vscode-open-in-github"
+		"ziyasal.vscode-open-in-github",
+		"mutantdino.resourcemonitor"
 	],
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	"forwardPorts": [],
