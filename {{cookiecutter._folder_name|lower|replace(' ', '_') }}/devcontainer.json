@@ -14,11 +14,13 @@
 		// required for docker-in-docker to run
 		"source=dind-var-lib-docker,target=/var/lib/docker,type=volume",
 		// Pass though the kube config folder (read-write as minikube needs to write to it)
-		"source=${localEnv:HOME}${localEnv:USERPROFILE}/.kube,target=/home/vscode/.kube,type=bind,readonly=false",
+		"source=${localEnv:HOME}${localEnv:USERPROFILE}/.kube,target=/home/{{cookiecutter.remoteUser|lower}}/.kube,type=bind,readonly=false",
 		// Pass though the ssh keypair folder (readonly)
-		"source=${localEnv:HOME}${localEnv:USERPROFILE}/.ssh/,target=/home/vscode/.ssh/,type=bind,consistency=cached,readonly=true",
+		"source=${localEnv:HOME}${localEnv:USERPROFILE}/.ssh/,target=/home/{{cookiecutter.remoteUser|lower}}/.ssh/,type=bind,consistency=cached,readonly=true",
 		// Pass though the gitconfig file (readonly)
-		"source=${localEnv:HOME}${localEnv:USERPROFILE}/.gitconfig,target=/home/vscode/.gitconfig,type=bind,consistency=cached,readonly=true",
+		"source=${localEnv:HOME}${localEnv:USERPROFILE}/.gitconfig,target=/home/{{cookiecutter.remoteUser|lower}}/.gitconfig,type=bind,consistency=cached,readonly=true",
+		// Pass though the zsh_history file (readonly)
+		"source=${localEnv:ZSH_CONFIG}${localEnv:USERPROFILE}/.zsh_history,target=/home/{{cookiecutter.remoteUser|lower}}/.zsh_history,type=bind,consistency=cached,readonly=true",
 	],
 	"remoteEnv": {
 		"TZ": "Europe/London"
