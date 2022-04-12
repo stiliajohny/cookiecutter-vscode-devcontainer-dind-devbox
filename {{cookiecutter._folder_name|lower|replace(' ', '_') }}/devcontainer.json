@@ -20,7 +20,7 @@
 		// Pass though the gitconfig file (readonly)
 		"source=${localEnv:HOME}${localEnv:USERPROFILE}/.gitconfig,target=/home/{{cookiecutter.remoteUser|lower}}/.gitconfig,type=bind,consistency=cached,readonly=true",
 		// Pass though the zsh_history file (readonly)
-		"source=${localEnv:ZSH_CONFIG}${localEnv:USERPROFILE}/.zsh_history,target=/home/{{cookiecutter.remoteUser|lower}}/.zsh_history,type=bind,consistency=cached,readonly=true",
+		"source=${localEnv:ZSH_CONFIG}${localEnv:USERPROFILE}/.zsh_history,target=/home/{{cookiecutter.remoteUser|lower}}/zsh_history,type=bind,consistency=cached,readonly=true",
 	],
 	"remoteEnv": {
 		"TZ": "Europe/London"
