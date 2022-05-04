@@ -19,7 +19,7 @@ jobs:
           set -e
 
           # Update this based on your image name and the path of the .devcontainer folder in your repository
-          FOLDER_WITH_DOT_DEVCONTAINER="./{{cookiecutter._folder_name|lower|replace(' ', '_') }}/"
+          FOLDER_WITH_DOT_DEVCONTAINER="./"
           IMAGE_NAME="my-test-devcontainer"
           IMAGE_REPOSITORY="$(echo "ghcr.io/${{ github.repository_owner }}/${IMAGE_NAME}" | tr '[:upper:]' '[:lower:]')"
 
