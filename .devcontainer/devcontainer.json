@@ -1,0 +1,50 @@
+{
+	"name": "test environment",
+	"dockerFile": "Dockerfile",
+	"runArgs": [
+		"--init",
+		// required for docker-in-docker to run
+		"--privileged",
+		// Needs dfor debuging
+		"--cap-add=SYS_PTRACE",
+		"--security-opt",
+		"seccomp=unconfined"
+	],
+	"mounts": [
+		// required for docker-in-docker to run
+		"source=dind-var-lib-docker,target=/var/lib/docker,type=volume",
+		// Pass though the kube config folder (read-write as minikube needs to write to it)
+		"source=${localEnv:HOME}${localEnv:USERPROFILE}/.kube,target=/home/vscode/.kube,type=bind,readonly=false",
+		// Pass though the ssh keypair folder (readonly)
+		"source=${localEnv:HOME}${localEnv:USERPROFILE}/.ssh/,target=/home/vscode/.ssh/,type=bind,consistency=cached,readonly=true",
+		// Pass though the gitconfig file (readonly)
+		"source=${localEnv:HOME}${localEnv:USERPROFILE}/.gitconfig,target=/home/vscode/.gitconfig,type=bind,consistency=cached,readonly=true",
+	],
+	"remoteEnv": {
+		"TZ": "Europe/London"
+	},
+	"shutdownAction": "stopContainer",
+	"overrideCommand": false, // if true docker doesnt run in the container
+	// Set *default* container specific settings.json values on container create.
+	"settings": {
+		"files.autoSave": "afterDelay",
+		"editor.tabSize": 2,
+	},
+	"features": {},
+	// Add the IDs of extensions you want installed when the container is created.
+	"extensions": [
+		"mutantdino.resourcemonitor"
+	],
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	"forwardPorts": [],
+	// Use 'postCreateCommand' to run commands after the container is created.
+	// "postStartCommand": "nohup bash -c 'minikube start &' > minikube.log 2>&1",
+	"postCreateCommand": "nohup bash -c 'echo hello &' > postcreatecommand.log 2>&1",
+	// Comment out to connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
+	"remoteUser": "vscode",
+	"hostRequirements": {
+		"cpus": 2,
+		"memory": "4gb",
+		"storage": "32gb"
+	},
+}

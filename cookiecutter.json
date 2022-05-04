@@ -25,5 +25,5 @@
         "mcr.microsoft.com/vscode/devcontainers/python:3.6"
     ],
     "docker_extra_packages": "apt-utils git zsh jq python3-pip vim tmux curl wget htop tree net-tools ",
-    "postCreateCommand": "nohup bash -c 'echo Hello &' > postCreateCommand.log 2>&1",
+    "postCreateCommand": "nohup bash -c 'echo Hello &' > postCreateCommand.log 2>&1"
 }
