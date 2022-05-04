@@ -1,67 +1,91 @@
 # Note: You can use any Debian/Ubuntu based image you want.
-FROM mcr.microsoft.com/vscode/devcontainers/base:buster
+FROM {{cookiecutter.dockerfile_FROM_image | lower }}
 
-# [Option] Install zsh
-ARG INSTALL_ZSH="true"
-# [Option] Upgrade OS packages to their latest versions
-ARG UPGRADE_PACKAGES="true"
-# [Option] Enable non-root Docker access in container
-ARG ENABLE_NONROOT_DOCKER="true"
-# [Option] Use the OSS Moby Engine instead of the licensed Docker Engine
-ARG USE_MOBY="true"
-# [Option] Engine/CLI Version
-ARG DOCKER_VERSION="latest"
+ARG INSTALL_ZSH="true" \
+    UPGRADE_PACKAGES="true" \
+    ENABLE_NONROOT_DOCKER="true" \
+    USE_MOBY="true" \
+    DOCKER_VERSION="latest" \
+    PYTHON_PATH=/usr/local/sbin/python \
+    USERNAME=automatic \
+    USER_UID=1000 \
+    USER_GID=$USER_UID \
+    INSTALLED_PACKAGES=" {{ cookiecutter.dockerfile_FROM_image | lower }} "
 
-# Enable new "BUILDKIT" mode for Docker CLI
-ENV DOCKER_BUILDKIT=1
+ENV DOCKER_BUILDKIT=1 \
+    PIPX_HOME=/usr/local/py-utils \
+    PIPX_BIN_DIR=/usr/local/py-utils/bin \
+    PATH=${PYTHON_PATH}/bin:${PATH}:${PIPX_BIN_DIR} \
+    GOROOT=/usr/local/go \
+    GOPATH=/go \
+    PATH=${GOPATH}/bin:${GOROOT}/bin:${PATH} \
+    DBUS_SESSION_BUS_ADDRESS="autolaunch:" \
+    VNC_RESOLUTION="1920x1080x16" \
+    VNC_DPI="96" \
+    VNC_PORT="5901" \
+    NOVNC_PORT="6080" \
+    DISPLAY=":1" \
+    LANG="en_US.UTF-8" \
+    LANGUAGE="en_US.UTF-8"
 
-# Install needed packages and setup non-root user. Use a separate RUN statement to add your
-# own dependencies. A user of "automatic" attempts to reuse an user ID if one already exists.
-ARG USERNAME=automatic
-ARG USER_UID=1000
-ARG USER_GID=$USER_UID
-ARG INSTALLED_PACKAGES="apt-utils git zsh jq python3-pip"
+# Install additional OS packages.
+RUN apt-get update && \
+    export DEBIAN_FRONTEND=noninteractive && \
+    apt-get -y install --no-install-recommends $INSTALLED_PACKAGES
 
 COPY library-scripts/*.sh /tmp/library-scripts/
 COPY scripts/*.sh /tmp/scripts/
+COPY library-scripts/kubectl-helm-debian.sh /tmp/library-scripts/
+COPY library-scripts/awscli-debian.sh /tmp/library-scripts/
+COPY library-scripts/python-debian.sh /tmp/library-scripts/
+COPY library-scripts/go-debian.sh /tmp/library-scripts/
+COPY library-scripts/terraform-debian.sh /tmp/library-scripts/
+COPY library-scripts/desktop-lite-debian.sh /tmp/library-scripts/
+COPY library-scripts/entrypoint.sh /home/vscode/entrypoint.sh
 
-RUN apt-get update \
-    && /bin/bash /tmp/library-scripts/common-debian.sh "${INSTALL_ZSH}" "${USERNAME}" "${USER_UID}" "${USER_GID}" "${UPGRADE_PACKAGES}" "true" "true" \
+
+
+# RUN /bin/bash /tmp/scripts/*.sh && \
+#     apt-get autoremove -y && apt-get clean -y && rm -rf /tmp/scripts
+
+RUN /bin/bash /tmp/library-scripts/common-debian.sh "${INSTALL_ZSH}" "${USERNAME}" "${USER_UID}" "${USER_GID}" "${UPGRADE_PACKAGES}" "true" "true" \
     # Use Docker script from script library to set things up
-    && /bin/bash /tmp/library-scripts/docker-in-docker-debian.sh "${ENABLE_NONROOT_DOCKER}" "${USERNAME}" "${USE_MOBY}" "${DOCKER_VERSION}" \
-    # Clean up
-    && apt-get autoremove -y && apt-get clean -y && rm -rf /var/lib/apt/lists/* /tmp/library-scripts/
-RUN /bin/bash /tmp/scripts/*.sh && \
-    apt-get autoremove -y && apt-get clean -y && rm -rf /tmp/scripts
+    && /bin/bash /tmp/library-scripts/docker-in-docker-debian.sh "${ENABLE_NONROOT_DOCKER}" "${USERNAME}" "${USE_MOBY}" "${DOCKER_VERSION}"
 
-VOLUME [ "/var/lib/docker" ]
 
-# Setting the ENTRYPOINT to docker-init.sh will start up the Docker Engine
-# inside the container "overrideCommand": false is set in devcontainer.json.
-# The script will alsodocker rmi $(docker images --filter "dangling=true" -q --no-trunc) execute CMD if you need to alter startup behaviors.
-ENTRYPOINT [ "/usr/local/share/docker-init.sh" ]
-CMD [ "sleep", "infinity" ]
+# Install minikube kubectl and helm
+# https://github.com/microsoft/vscode-dev-containers/blob/main/script-library/docs/kubectl-helm.md
+RUN bash /tmp/library-scripts/kubectl-helm-debian.sh latest latest latest
 
-# [Optional] Uncomment this section to install additional OS packages.
-RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
-    && apt-get -y install --no-install-recommends $INSTALLED_PACKAGES
+# Install awscli
+# https://github.com/microsoft/vscode-dev-containers/blob/main/script-library/docs/awscli.md
+RUN bash /tmp/library-scripts/awscli-debian.sh
 
-# Install minikube
-RUN curl -LO  -o minikube-linux-amd64 https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64 && \
-    sudo install minikube-linux-amd64 /usr/local/bin/minikube
+# Install python and packages
+# https://github.com/microsoft/vscode-dev-containers/blob/main/script-library/docs/python.md
+RUN apt-get update && bash /tmp/library-scripts/python-debian.sh "3.10" "${PYTHON_PATH}" "${PIPX_HOME}"
 
 # Install kind
 RUN curl -LO -o /tmp/kind ./kind https://kind.sigs.k8s.io/dl/v0.12.0/kind-linux-amd64 && \
     chmod +x /tmp/kind && \
     mv /tmp/kind /usr/local/bin/kind
 
-# Install kubectl
-RUN curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" && \
-    sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+# Install terraform, tflint and terragrunt
+# https://github.com/microsoft/vscode-dev-containers/blob/main/script-library/docs/terraform.md
+RUN apt-get update && bash /tmp/library-scripts/terraform-debian.sh
 
-# install helm
-RUN curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 && \
-    chmod 700 get_helm.sh && \
-    ./get_helm.sh
+# Install Fluxbox
+# https://github.com/microsoft/vscode-dev-containers/blob/main/script-library/docs/desktop-lite.md
+RUN apt-get update && bash /tmp/library-scripts/desktop-lite-debian.sh
 
-# RUN pip3 install setuptools poetry ansible
+# Clean up
+RUN apt-get autoremove -y && \
+    apt-get clean -y && \
+    rm -rf /var/lib/apt/lists/*
+
+# Mount docker socket
+VOLUME [ "/var/lib/docker" ]
+
+
+ENTRYPOINT  [ "/home/vscode/entrypoint.sh" ]
+CMD [ "sleep", "infinity" ]

@@ -92,8 +92,16 @@ Initialize a new folder with:
 - Kind
 - Minikube
 - Docker (dockerd)
-- kubectl
-- helm
+- Kubectl
+- Helm
+- FluxBox
+- Terraform
+- Zsh
+- JQ
+- Vim
+- Tmux
+- Htop
+- VNC
 
 <!-- ROADMAP -->
 
