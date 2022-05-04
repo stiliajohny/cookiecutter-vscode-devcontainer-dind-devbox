@@ -1,12 +1,12 @@
 name: Generate Dev Container Image
 on:
-  # schedule:
-  #   - cron: "0 0 1 * *"
+  schedule:
+    - cron: "0 0 1 * *"
   push:
     branches:
       - "master"
-    # paths:
-    #   - "{{cookiecutter._folder_name|lower|replace(' ', '_') }}/**/*"
+    paths:
+      - "./devcontainer/**/*"
 permissions:
   contents: read
   packages: write
@@ -20,7 +20,7 @@ jobs:
 
           # Update this based on your image name and the path of the .devcontainer folder in your repository
           FOLDER_WITH_DOT_DEVCONTAINER="./"
-          IMAGE_NAME="my-test-devcontainer"
+          IMAGE_NAME="cookiecutter-vscode-devcontainer-dind-devbox"
           IMAGE_REPOSITORY="$(echo "ghcr.io/${{ github.repository_owner }}/${IMAGE_NAME}" | tr '[:upper:]' '[:lower:]')"
 
           # [Optional] Enable buildkit, set output to plain text for logging

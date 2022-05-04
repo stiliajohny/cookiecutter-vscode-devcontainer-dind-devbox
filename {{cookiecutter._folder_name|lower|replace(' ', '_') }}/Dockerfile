@@ -28,6 +28,9 @@ ENV DOCKER_BUILDKIT=1 \
     LANG="en_US.UTF-8" \
     LANGUAGE="en_US.UTF-8"
 
+# Suppress an apt-key warning about standard out not being a terminal. Use in this script is safe.
+ENV APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=DontWarn
+
 # Install additional OS packages.
 RUN apt-get update && \
     export DEBIAN_FRONTEND=noninteractive && \

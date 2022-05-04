@@ -28,13 +28,16 @@ ENV DOCKER_BUILDKIT=1 \
     LANG="en_US.UTF-8" \
     LANGUAGE="en_US.UTF-8"
 
+# Suppress an apt-key warning about standard out not being a terminal. Use in this script is safe.
+ENV APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=DontWarn
+
 # Install additional OS packages.
-RUN apt-get update && \
+RUN apt-get update 2>&1 && \
     export DEBIAN_FRONTEND=noninteractive && \
-    apt-get -y install --no-install-recommends $INSTALLED_PACKAGES
+    apt-get -y install --no-install-recommends $INSTALLED_PACKAGES 2>&1
 
 COPY library-scripts/*.sh /tmp/library-scripts/
-COPY scripts/*.sh /tmp/scripts/
+COPY scripts/* /tmp/scripts/
 COPY library-scripts/kubectl-helm-debian.sh /tmp/library-scripts/
 COPY library-scripts/awscli-debian.sh /tmp/library-scripts/
 COPY library-scripts/python-debian.sh /tmp/library-scripts/
@@ -44,44 +47,40 @@ COPY library-scripts/desktop-lite-debian.sh /tmp/library-scripts/
 COPY library-scripts/entrypoint.sh /home/vscode/entrypoint.sh
 
 
-
-# RUN /bin/bash /tmp/scripts/*.sh && \
-#     apt-get autoremove -y && apt-get clean -y && rm -rf /tmp/scripts
-
-RUN /bin/bash /tmp/library-scripts/common-debian.sh "${INSTALL_ZSH}" "${USERNAME}" "${USER_UID}" "${USER_GID}" "${UPGRADE_PACKAGES}" "true" "true" \
+RUN /bin/bash /tmp/library-scripts/common-debian.sh "${INSTALL_ZSH}" "${USERNAME}" "${USER_UID}" "${USER_GID}" "${UPGRADE_PACKAGES}" "true" "true" 2>&1 \
     # Use Docker script from script library to set things up
-    && /bin/bash /tmp/library-scripts/docker-in-docker-debian.sh "${ENABLE_NONROOT_DOCKER}" "${USERNAME}" "${USE_MOBY}" "${DOCKER_VERSION}"
+    && /bin/bash /tmp/library-scripts/docker-in-docker-debian.sh "${ENABLE_NONROOT_DOCKER}" "${USERNAME}" "${USE_MOBY}" "${DOCKER_VERSION}" 2>&1
 
 
 # Install minikube kubectl and helm
 # https://github.com/microsoft/vscode-dev-containers/blob/main/script-library/docs/kubectl-helm.md
-RUN bash /tmp/library-scripts/kubectl-helm-debian.sh latest latest latest
+RUN bash /tmp/library-scripts/kubectl-helm-debian.sh latest latest latest 2>&1
 
 # Install awscli
 # https://github.com/microsoft/vscode-dev-containers/blob/main/script-library/docs/awscli.md
-RUN bash /tmp/library-scripts/awscli-debian.sh
+RUN bash /tmp/library-scripts/awscli-debian.sh 2>&1
 
 # Install python and packages
 # https://github.com/microsoft/vscode-dev-containers/blob/main/script-library/docs/python.md
-RUN apt-get update && bash /tmp/library-scripts/python-debian.sh "3.10" "${PYTHON_PATH}" "${PIPX_HOME}"
+RUN apt-get update 2>&1 && bash /tmp/library-scripts/python-debian.sh "3.10" "${PYTHON_PATH}" "${PIPX_HOME}" 2>&1
 
 # Install kind
-RUN curl -LO -o /tmp/kind ./kind https://kind.sigs.k8s.io/dl/v0.12.0/kind-linux-amd64 && \
+RUN curl -LO -o /tmp/kind ./kind https://kind.sigs.k8s.io/dl/v0.12.0/kind-linux-amd64  2>&1 && \
     chmod +x /tmp/kind && \
     mv /tmp/kind /usr/local/bin/kind
 
 # Install terraform, tflint and terragrunt
 # https://github.com/microsoft/vscode-dev-containers/blob/main/script-library/docs/terraform.md
-RUN apt-get update && bash /tmp/library-scripts/terraform-debian.sh
+RUN apt-get update 2>&1 && bash /tmp/library-scripts/terraform-debian.sh 2>&1
 
 # Install Fluxbox
 # https://github.com/microsoft/vscode-dev-containers/blob/main/script-library/docs/desktop-lite.md
-RUN apt-get update && bash /tmp/library-scripts/desktop-lite-debian.sh
+RUN apt-get update 2>&1 && bash /tmp/library-scripts/desktop-lite-debian.sh 2>&1
 
 # Clean up
-RUN apt-get autoremove -y && \
-    apt-get clean -y && \
-    rm -rf /var/lib/apt/lists/*
+RUN apt-get autoremove -y 2>&1 && \
+    apt-get clean -y  2>&1&& \
+    rm -rf /var/lib/apt/lists/* 2>&1
 
 # Mount docker socket
 VOLUME [ "/var/lib/docker" ]
