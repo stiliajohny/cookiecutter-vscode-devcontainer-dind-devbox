@@ -10,7 +10,7 @@ ARG INSTALL_ZSH="true" \
     USERNAME=automatic \
     USER_UID=1000 \
     USER_GID=$USER_UID \
-    INSTALLED_PACKAGES=" {{ cookiecutter.dockerfile_FROM_image | lower }} "
+    INSTALLED_PACKAGES=" {{ cookiecutter.docker_extra_packages | lower }} "
 
 ENV DOCKER_BUILDKIT=1 \
     PIPX_HOME=/usr/local/py-utils \

@@ -10,7 +10,7 @@ ARG INSTALL_ZSH="true" \
     USERNAME=automatic \
     USER_UID=1000 \
     USER_GID=$USER_UID \
-    INSTALLED_PACKAGES=" mcr.microsoft.com/vscode/devcontainers/base:ubuntu "
+    INSTALLED_PACKAGES="apt-utils git zsh jq python3-pip vim tmux curl wget htop tree net-tools "
 
 ENV DOCKER_BUILDKIT=1 \
     PIPX_HOME=/usr/local/py-utils \
