@@ -5,8 +5,8 @@ on:
   push:
     branches:
       - "master"
-    paths:
-      - "{{cookiecutter._folder_name|lower|replace(' ', '_') }}/**/*"
+    # paths:
+    #   - "{{cookiecutter._folder_name|lower|replace(' ', '_') }}/**/*"
 permissions:
   contents: read
   packages: write
