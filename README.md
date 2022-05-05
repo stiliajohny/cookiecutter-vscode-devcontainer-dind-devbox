@@ -14,6 +14,8 @@
     <br />
     <a href="https://github.com/stiliajohny/cookiecutter-vscode-devcontainer-dind-devbox/raw/master/README.md"><strong>Explore the docs »</strong></a>
     <br />
+    <a href="https://vscode.dev/redirect?url=vscode://ms-vscode-remote.remote-containers/cloneInVolume?url=https://github.com/stiliajohny/cookiecutter-vscode-devcontainer-dind-devbox">Open in DevContainer</a>
+    ·
     <a href="https://github.com/stiliajohny/cookiecutter-vscode-devcontainer-dind-devbox/issues/new?labels=i%3A+bug&template=1-bug-report.md">Report Bug</a>
     ·
     <a href="https://github.com/stiliajohny/cookiecutter-vscode-devcontainer-dind-devbox/issues/new?labels=i%3A+enhancement&template=2-feature-request.md">Request Feature</a>
