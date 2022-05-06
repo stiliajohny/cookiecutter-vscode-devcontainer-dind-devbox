@@ -3,10 +3,7 @@ on:
   schedule:
     - cron: "0 10 * * *"
   push:
-    branches:
-      - "master"
-    paths:
-      - "./devcontainer/**/*"
+
 permissions:
   contents: read
   packages: write
